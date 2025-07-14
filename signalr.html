@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Puzzle Collab HTML</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+</head>
+<body>
+  <h1>Puzzle Demo</h1>
+  <button id="moveBtn">Invia move</button>
+  <div id="log"></div>
+  <script>
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl("http://localhost:5287/puzzlehub")
+      .build();
+
+      connection.on("InitPuzzle", (state) => {
+        if(state && state.pieces) {
+          document.getElementById("log").innerHTML += `<p>Puzzle inizializzato: ${JSON.stringify(state.pieces)}</p>`;
+        } else {
+          document.getElementById("log").innerHTML += `<p>Puzzle inizializzato (vuoto)</p>`;
+        }
+      });
+
+    connection.start().then(() => {
+      document.getElementById("log").innerHTML += "<p>Connesso a SignalR!</p>";
+      document.getElementById("moveBtn").onclick = () => {
+        connection.invoke("MovePiece", 1, 5, 5);
+      };
+    });
+  </script>
+</body>
+</html>
