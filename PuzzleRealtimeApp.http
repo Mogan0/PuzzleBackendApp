@@ -1,6 +1,0 @@
-@PuzzleRealtimeApp_HostAddress = http://localhost:5287
-
-GET {{PuzzleRealtimeApp_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

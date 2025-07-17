@@ -1,34 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "D:\\User\\ale10\\Desktop\\Polytec\\Backend\\PuzzleRealtimeApp\\PuzzleRealtimeApp.csproj": {}
+    "C:\\Users\\alessandro.monaco\\OneDrive - Sidera ICTease Srl\\Desktop\\Sidera\\Project\\PuzzleRealtimeApp\\PuzzleRealtimeApp.csproj": {}
   },
   "projects": {
-    "D:\\User\\ale10\\Desktop\\Polytec\\Backend\\PuzzleRealtimeApp\\PuzzleRealtimeApp.csproj": {
+    "C:\\Users\\alessandro.monaco\\OneDrive - Sidera ICTease Srl\\Desktop\\Sidera\\Project\\PuzzleRealtimeApp\\PuzzleRealtimeApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\User\\ale10\\Desktop\\Polytec\\Backend\\PuzzleRealtimeApp\\PuzzleRealtimeApp.csproj",
+        "projectUniqueName": "C:\\Users\\alessandro.monaco\\OneDrive - Sidera ICTease Srl\\Desktop\\Sidera\\Project\\PuzzleRealtimeApp\\PuzzleRealtimeApp.csproj",
         "projectName": "PuzzleRealtimeApp",
-        "projectPath": "D:\\User\\ale10\\Desktop\\Polytec\\Backend\\PuzzleRealtimeApp\\PuzzleRealtimeApp.csproj",
-        "packagesPath": "C:\\Users\\ale10\\.nuget\\packages\\",
-        "outputPath": "D:\\User\\ale10\\Desktop\\Polytec\\Backend\\PuzzleRealtimeApp\\obj\\",
+        "projectPath": "C:\\Users\\alessandro.monaco\\OneDrive - Sidera ICTease Srl\\Desktop\\Sidera\\Project\\PuzzleRealtimeApp\\PuzzleRealtimeApp.csproj",
+        "packagesPath": "C:\\Users\\alessandro.monaco\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\alessandro.monaco\\OneDrive - Sidera ICTease Srl\\Desktop\\Sidera\\Project\\PuzzleRealtimeApp\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\ale10\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config"
+          "C:\\Users\\alessandro.monaco\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net9.0"
+          "net8.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net9.0": {
-            "targetAlias": "net9.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {}
           }
         },
@@ -41,17 +37,12 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.100"
+        }
       },
       "frameworks": {
-        "net9.0": {
-          "targetAlias": "net9.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.AspNetCore.OpenApi": {
-              "target": "Package",
-              "version": "[9.0.7, )"
-            },
             "Microsoft.AspNetCore.SignalR": {
               "target": "Package",
               "version": "[1.2.0, )"
@@ -76,7 +67,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.108/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.412/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Puzzle Collab HTML</title>
+  <title>Puzzle Collab Live Test</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
 </head>
 <body>
-  <h1>Puzzle Demo</h1>
-  <button id="moveBtn">Invia move</button>
+  <h1>SignalR Live Test</h1>
+  <button onclick="sendMove()">Invia MovePiece</button>
   <div id="log"></div>
   <script>
     const connection = new signalR.HubConnectionBuilder()
       .withUrl("http://localhost:5287/puzzlehub")
       .build();
 
-      connection.on("InitPuzzle", (state) => {
-        if(state && state.pieces) {
-          document.getElementById("log").innerHTML += `<p>Puzzle inizializzato: ${JSON.stringify(state.pieces)}</p>`;
-        } else {
-          document.getElementById("log").innerHTML += `<p>Puzzle inizializzato (vuoto)</p>`;
-        }
-      });
+    connection.on("InitPuzzle", (state) => {
+      document.getElementById("log").innerHTML += `<p>Inizializzato: ${JSON.stringify(state.pieces)}</p>`;
+    });
+
+    connection.on("ReceiveMove", (pieceId, newX, newY) => {
+      document.getElementById("log").innerHTML += `<p>Pezzo ${pieceId} spostato in (${newX}, ${newY})</p>`;
+      console.log("Ricevuto evento ReceiveMove:", pieceId, newX, newY);
+    });
 
     connection.start().then(() => {
-      document.getElementById("log").innerHTML += "<p>Connesso a SignalR!</p>";
-      document.getElementById("moveBtn").onclick = () => {
-        connection.invoke("MovePiece", 1, 5, 5);
-      };
+      document.getElementById("log").innerHTML += "<p>Connesso!</p>";
     });
+
+    function sendMove() {
+      connection.invoke("MovePiece", 1, Math.floor(Math.random() * 10), Math.floor(Math.random() * 10));
+    }
   </script>
 </body>
 </html>
