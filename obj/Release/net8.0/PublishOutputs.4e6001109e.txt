@@ -1,0 +1,15 @@
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\PuzzleRealtimeApp.exe
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\appsettings.Development.json
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\appsettings.json
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\PuzzleRealtimeApp.dll
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\PuzzleRealtimeApp.deps.json
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\PuzzleRealtimeApp.runtimeconfig.json
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\PuzzleRealtimeApp.pdb
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\Microsoft.Extensions.Diagnostics.Abstractions.dll
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\Microsoft.Extensions.Hosting.Abstractions.dll
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\Microsoft.Extensions.ObjectPool.dll
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\Microsoft.Extensions.Options.dll
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\Newtonsoft.Json.dll
+C:\Users\alessandro.monaco\OneDrive - Sidera ICTease Srl\Desktop\Sidera\Project\PuzzleRealtimeApp\bin\Release\net8.0\publish\System.Net.WebSockets.WebSocketProtocol.dll
