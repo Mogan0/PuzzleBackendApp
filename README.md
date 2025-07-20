@@ -43,7 +43,6 @@ Bash
 
 Ora puoi avviare il servizio. Assicurati che la porta 5000.
 
-### Avvia il container del backend
     docker run -d -p 5000:5000 --name puzzle-backend-container puzzle-backend
 
 
