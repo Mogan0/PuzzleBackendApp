@@ -62,7 +62,7 @@ Ora puoi avviare il servizio. Assicurati che la porta 5000.
 
 ## Avviare web browser
 
-*Avviare un web browser qualsiasi e andare all'indirizzo http://localhost 
+*Avviare un web browser qualsiasi e andare all'indirizzo* http://localhost 
 
 
 
