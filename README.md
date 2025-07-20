@@ -5,9 +5,9 @@ L'idea è che chiunque si connetta possa collaborare per risolvere il puzzle, e 
 
 ## Ho diviso il progetto in due repository principali:
 
-**PuzzleBackendApp**: Il backend dell'app, gestisce lo stato del puzzle e la comunicazione in tempo reale.
+**PuzzleBackendApp**: Il backend dell'app, gestisce lo stato del puzzle e la comunicazione in tempo reale. [Link qui](https://github.com/Mogan0/PuzzleBackendApp)
 
-**PuzzleFrontendApp**: L'interfaccia utente web, quella con cui interagisci per giocare.
+**PuzzleFrontendApp**: L'interfaccia utente web, quella con cui interagisci per giocare. [Link qui](https://github.com/Mogan0/PuzzleFrontendApp/)
 
 Ho scelto di containerizzare entrambi i servizi con Docker.
 
@@ -23,19 +23,14 @@ Ho scelto di containerizzare entrambi i servizi con Docker.
 
 **Server Web Proxy**: Nginx (dentro il container Flutter) - per servire il frontend e inoltrare le richieste SignalR.
 
-## Per avviare il progetto
+# Per avviare il progetto PuzzleBackendApp
 
 Per avviare l'applicazione, ti servirà Docker Desktop (o un setup Docker equivalente) sul computer.
 
-## 1. Clona i Repository
+## 1. Clona i Repository del backend
 
-### Clona il repository del backend
     git clone https://github.com/Mogan0/PuzzleBackendApp
     cd PuzzleBackendApp
-
-### Clona il repository del frontend
-    git clone https://github.com/Mogan0/PuzzleFrontendApp
-    cd PuzzleFrontendApp
 
 ## 2. Costruisci l'Immagine Docker del Backend
 
@@ -44,28 +39,28 @@ Bash
 
     docker build -t puzzle-backend .
 
-## 3. Costruisci l'Immagine Docker del Frontend
+## 3. Avvia il Container
 
-Ora spostati nella directory PuzzleFrontendApp.
-Bash
-
-    cd ../PuzzleFrontendApp # Se sei ancora nella cartella del backend
-    docker build --no-cache -t puzzle-frontend .
-
-## 4. Avvia i Container
-
-Ora puoi avviare entrambi i servizi. Assicurati che le porte 80 e 5000 non siano già occupate.
-Bash
+Ora puoi avviare il servizio. Assicurati che la porta 5000.
 
 ### Avvia il container del backend
     docker run -d -p 5000:5000 --name puzzle-backend-container puzzle-backend
 
+
+# Per avviare il progetto PuzzleFrontendApp [Link qui](https://github.com/Mogan0/PuzzleFrontendApp/)
+
+## 1. Clona il repository del frontend
+    git clone https://github.com/Mogan0/PuzzleFrontendApp
+    cd PuzzleFrontendApp
+
+## 3. Costruisci l'Immagine Docker del Frontend
+
+    cd ../PuzzleFrontendApp # Se sei ancora nella cartella del backend
+    docker build --no-cache -t puzzle-frontend .
+
 ### Avvia il container del frontend
     docker run -d -p 80:80 --name puzzle-frontend-container puzzle-frontend
 
-## 5. Avviare Web Browser
-
-Apri un qualsiasi browser all'indirizzo http://localhost/
 
 ## BONUS: Accedere da Altri Dispositivi (Rete Locale)
 
