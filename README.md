@@ -23,7 +23,7 @@ Ho scelto di containerizzare entrambi i servizi con Docker.
 
 **Server Web Proxy**: Nginx (dentro il container Flutter) - per servire il frontend e inoltrare le richieste SignalR.
 
-# Per avviare il progetto PuzzleBackendApp
+# Per avviare il progetto PuzzleBackendApp [Link qui](https://github.com/Mogan0/PuzzleBackendApp)
 
 Per avviare l'applicazione, ti servirà Docker Desktop (o un setup Docker equivalente) sul computer.
 
