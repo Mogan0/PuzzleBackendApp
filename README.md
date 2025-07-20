@@ -60,6 +60,12 @@ Ora puoi avviare il servizio. Assicurati che la porta 5000.
 ### Avvia il container del frontend
     docker run -d -p 80:80 --name puzzle-frontend-container puzzle-frontend
 
+## Avviare web browser
+
+*Avviare un web browser qualsiasi e andare all'indirizzo http://localhost 
+
+
+
 
 ## BONUS: Accedere da Altri Dispositivi (Rete Locale)
 
