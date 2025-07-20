@@ -1,151 +1,136 @@
 using Microsoft.AspNetCore.SignalR;
 using puzzlerealtimeapp.model;
-using System.Linq; // Per usare LINQ (Select, FirstOrDefault, ToList)
-using System.Collections.Generic; // Per List
-using System; // Per Random
-
+using System.Collections.Concurrent;
 public class PuzzleHub : Hub
 {
-    // Stato statico del puzzle, condiviso tra tutte le connessioni al server
     private static PuzzleState puzzleState = new PuzzleState();
-    private static readonly int _gridSize = 10; // Deve corrispondere a _gridSize in Flutter
+    private static readonly int _gridSize = 10;
 
-    static PuzzleHub() // Costruttore statico per inizializzare lo stato una volta sola
+    private static ConcurrentDictionary<string, User> _connectedUsers = new ConcurrentDictionary<string, User>();
+
+    static PuzzleHub()
     {
         InitializePuzzlePieces();
     }
 
-    // Metodo per inizializzare i pezzi del puzzle
     private static void InitializePuzzlePieces()
     {
         puzzleState.Pieces = Enumerable.Range(0, _gridSize)
             .SelectMany(oy => Enumerable.Range(0, _gridSize)
                 .Select(ox => new PuzzlePieceModel
                 {
-                    Id = oy * _gridSize + ox, // ID univoco per ogni pezzo (0 a 99 per 10x10)
-                    CurrentX = ox, // Inizialmente, la posizione corrente è la posizione corretta
+                    Id = oy * _gridSize + ox,
+                    CurrentX = ox,
                     CurrentY = oy,
-                    CorrectX = ox, // La posizione finale corretta
+                    CorrectX = ox,
                     CorrectY = oy,
-                    IsPlacedCorrectly = true // Inizialmente tutti sono al posto giusto
+                    IsPlacedCorrectly = true
                 })
             ).ToList();
-
-        // Facoltativo: mescola i pezzi all'avvio del server per non avere un puzzle già risolto
         ShufflePuzzleState();
     }
 
-    // Metodo helper per mescolare lo stato dei pezzi (usato anche per ShufflePuzzle)
     private static void ShufflePuzzleState()
     {
         var random = new Random();
         var currentPositions = puzzleState.Pieces.Select(p => new { p.CurrentX, p.CurrentY }).ToList();
-        
-        // Mescola le posizioni
         currentPositions = currentPositions.OrderBy(a => random.Next()).ToList();
 
-        // Applica le posizioni mescolate ai pezzi
         for (int i = 0; i < puzzleState.Pieces.Count; i++)
         {
             puzzleState.Pieces[i].CurrentX = currentPositions[i].CurrentX;
             puzzleState.Pieces[i].CurrentY = currentPositions[i].CurrentY;
-            puzzleState.Pieces[i].IsPlacedCorrectly = 
-                (puzzleState.Pieces[i].CurrentX == puzzleState.Pieces[i].CorrectX && 
+            puzzleState.Pieces[i].IsPlacedCorrectly =
+                (puzzleState.Pieces[i].CurrentX == puzzleState.Pieces[i].CorrectX &&
                  puzzleState.Pieces[i].CurrentY == puzzleState.Pieces[i].CorrectY);
         }
     }
 
 
-    public override async Task OnConnectedAsync()
+    public async Task SetUsername(string username)
     {
-        Console.WriteLine($"Client connesso: {Context.ConnectionId}");
-        // Invia lo stato completo del puzzle al client che si è appena connesso
-        await Clients.Caller.SendAsync("ReceivePuzzleState", puzzleState.Pieces);
-        Console.WriteLine($"Stato iniziale inviato a {Context.ConnectionId}");
-        await base.OnConnectedAsync();
+        var connectionId = Context.ConnectionId;
+        var newUser = new User { ConnectionId = connectionId, Username = username };
+
+        if (_connectedUsers.TryAdd(connectionId, newUser))
+        {
+            Console.WriteLine($"Utente connesso: {username} ({connectionId})");
+            await Clients.Caller.SendAsync("ReceivePuzzleState", puzzleState.Pieces);
+            await Clients.All.SendAsync("ReceiveUserList", _connectedUsers.Values.ToList());
+            Console.WriteLine($"Lista utenti aggiornata diffusa a tutti.");
+        }
+        else
+        {
+            Console.WriteLine($"Errore: ID di connessione {connectionId} già presente nel dizionario utenti.");
+        }
     }
 
-    // Metodo chiamato dal client quando un pezzo viene trascinato su un altro
+
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        var connectionId = Context.ConnectionId;
+        if (_connectedUsers.TryRemove(connectionId, out var disconnectedUser))
+        {
+            Console.WriteLine($"Utente disconnesso: {disconnectedUser.Username} ({connectionId})");
+            await Clients.All.SendAsync("ReceiveUserList", _connectedUsers.Values.ToList());
+            Console.WriteLine($"Lista utenti aggiornata diffusa a tutti dopo disconnessione.");
+        }
+        else
+        {
+            Console.WriteLine($"Errore: ID di connessione {connectionId} non trovato nel dizionario utenti alla disconnessione.");
+        }
+        await base.OnDisconnectedAsync(exception);
+    }
+
     public async Task MovePiece(int draggedPieceId, int targetX, int targetY)
     {
         Console.WriteLine($"MovePiece ricevuto: dragged ID {draggedPieceId} a ({targetX}, {targetY})");
 
-        // Trova il pezzo trascinato
         var draggedPiece = puzzleState.Pieces.FirstOrDefault(p => p.Id == draggedPieceId);
-        if (draggedPiece == null)
-        {
-            Console.WriteLine($"Errore: Pezzo trascinato con ID {draggedPieceId} non trovato.");
-            return;
-        }
+        if (draggedPiece == null) {  return; }
 
-        // Trova il pezzo che si trova nella posizione target (dove è stato rilasciato il pezzo trascinato)
         var targetPiece = puzzleState.Pieces.FirstOrDefault(p => p.CurrentX == targetX && p.CurrentY == targetY);
-        if (targetPiece == null)
-        {
-            Console.WriteLine($"Errore: Nessun pezzo trovato nella posizione target ({targetX}, {targetY}).");
-            return;
-        }
+        if (targetPiece == null) {  return; }
 
-        // --- Logica di SCAMBIO ---
-        // Salva le posizioni del pezzo trascinato
         int tempX = draggedPiece.CurrentX;
         int tempY = draggedPiece.CurrentY;
 
-        // Sposta il pezzo trascinato nella posizione del pezzo target
         draggedPiece.CurrentX = targetPiece.CurrentX;
         draggedPiece.CurrentY = targetPiece.CurrentY;
-
-        // Sposta il pezzo target nella posizione originale del pezzo trascinato
         targetPiece.CurrentX = tempX;
         targetPiece.CurrentY = tempY;
 
-        // --- Aggiorna lo stato di IsPlacedCorrectly per entrambi i pezzi ---
-        draggedPiece.IsPlacedCorrectly = 
+        draggedPiece.IsPlacedCorrectly =
             (draggedPiece.CurrentX == draggedPiece.CorrectX && draggedPiece.CurrentY == draggedPiece.CorrectY);
-        targetPiece.IsPlacedCorrectly = 
+        targetPiece.IsPlacedCorrectly =
             (targetPiece.CurrentX == targetPiece.CorrectX && targetPiece.CurrentY == targetPiece.CorrectY);
-        
+
         Console.WriteLine($"Pezzi scambiati: ID {draggedPiece.Id} e ID {targetPiece.Id}");
 
-        // --- Verifica condizione di vittoria ---
         bool allPiecesCorrect = puzzleState.Pieces.All(p => p.IsPlacedCorrectly);
-        if (allPiecesCorrect)
-        {
-            Console.WriteLine("PUZZLE RISOLTO!");
-            // Potresti inviare un messaggio specifico di vittoria o semplicemente aggiornare lo stato
-            // che verrà riflesso nella UI del client
-        }
+        if (allPiecesCorrect) { Console.WriteLine("PUZZLE RISOLTO!"); }
 
-        // --- Invia lo stato aggiornato a TUTTI i client ---
-        // Questo invierà la lista completa e aggiornata dei pezzi.
         await Clients.All.SendAsync("ReceivePuzzleState", puzzleState.Pieces);
         Console.WriteLine($"Stato puzzle aggiornato diffuso a tutti i client.");
     }
 
-    // Metodo per mescolare il puzzle (chiamato dal client "Mescola")
     public async Task ShufflePuzzle()
     {
         Console.WriteLine("Richiesta di mescolare il puzzle ricevuta.");
-        ShufflePuzzleState(); // Riutilizza la logica di mescolatura
-        
-        // Invia lo stato aggiornato a TUTTI i client
+        ShufflePuzzleState();
         await Clients.All.SendAsync("ReceivePuzzleState", puzzleState.Pieces);
         Console.WriteLine("Puzzle mescolato e stato diffuso a tutti i client.");
     }
 
-    // Metodo per resettare il puzzle (chiamato dal client "Reset")
     public async Task ResetPuzzle()
     {
         Console.WriteLine("Richiesta di reset del puzzle ricevuta.");
-        // Riporta ogni pezzo alla sua posizione corretta
         foreach (var piece in puzzleState.Pieces)
         {
             piece.CurrentX = piece.CorrectX;
             piece.CurrentY = piece.CorrectY;
-            piece.IsPlacedCorrectly = true; // Sono tutti al posto giusto
+            piece.IsPlacedCorrectly = true;
         }
-        
-        // Invia lo stato aggiornato a TUTTI i client
         await Clients.All.SendAsync("ReceivePuzzleState", puzzleState.Pieces);
         Console.WriteLine("Puzzle resettato e stato diffuso a tutti i client.");
     }
