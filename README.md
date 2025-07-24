@@ -73,7 +73,7 @@ Se vuoi testarlo con un cellulare o un altro PC sulla tua rete locale, ecco come
 
 Trova l'IP del tuo PC: Sul computer dove hai avviato Docker, cerca il suo indirizzo IP locale (es. 192.168.1.100).
 
-Aggiorna l'URL nel Frontend: Nel codice Flutter (lib/services/signalr_service.dart), cambia l'URL di SignalR per usare l'IP del tuo PC invece di localhost. Ad esempio: http://192.168.1.100/puzzlehub.
+Aggiorna l'URL nel Frontend: Nel codice Flutter (in lib/PuzzleHome.dart) alla riga 33, cambia l'URL di SignalR per usare l'IP del tuo PC invece di localhost. Ad esempio: http://192.168.1.100/puzzlehub.
 Dopo questa modifica, dovrai ricostruire l'immagine Docker del frontend e riavviare il suo container.
 
 Aggiorna le impostazioni CORS nel Backend: Nel Program.cs del backend, aggiungi il tuo IP locale alla lista WithOrigins per i CORS.
